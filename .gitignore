@@ -77,3 +77,11 @@ htmlcov/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+
+# Ollama
+.ollama/
+
+# Chroma DB
+chroma_db/
+*.chroma
+chroma_langchain_db/

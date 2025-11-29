@@ -2,7 +2,7 @@
     "settings": {
         "USER_AGENT": "Mozilla/5.0 (compatible; CustomCrawler/1.0)",
         "ROBOTSTXT_OBEY": true,
-        "LOG_LEVEL": "INFO",
+        "LOG_LEVEL": "INF",
         "LOG_STDOUT": false,
         "DOWNLOAD_DELAY": 1,
         "CONCURRENT_REQUESTS": 16,
