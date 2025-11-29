@@ -1,9 +1,8 @@
 {
     "settings": {
-    "USER_AGENT": "Mozilla/5.0 (compatible; CustomCrawler/1.0)",
-        'USER_AGENT', 
+        "USER_AGENT": "Mozilla/5.0 (compatible; CustomCrawler/1.0)",
         "ROBOTSTXT_OBEY": true,
-        "LOG_LEVEL": "ERROR",
+        "LOG_LEVEL": "INFO",
         "LOG_STDOUT": false,
         "DOWNLOAD_DELAY": 1,
         "CONCURRENT_REQUESTS": 16,
@@ -12,21 +11,24 @@
         "HTTPCACHE_ENABLED": false,
         "HTTPCACHE_EXPIRATION_SECS": 86400,
         "HTTPCACHE_DIR": "httpcache",
-        "BASE_URL": "https://www.colorado.edu",
         "DEPTH_PRIORITY": 1,
         "SCHEDULER_DISK_QUEUE": "scrapy.squeues.PickleFifoDiskQueue",
         "SCHEDULER_MEMORY_QUEUE": "scrapy.squeues.FifoMemoryQueue",
-        "DUPEFILTER_CLASS": "src.filters.dupefilter.RedisBasedDupeFilter",
-        "DUPEFILTER_REDIS_URL": "redis://localhost:6379/0",
-        "DUPEFILTER_DB_PATH": "shared_urls.db",
-        "DUPEFILTER_FILE_PATH": "seen_urls.txt",
-        "DUPEFILTER_KEY_PREFIX": "scrapy:dupefilter",
-        "QDRANT_URL": "http://localhost:6333",
-        "QDRANT_COLLECTION": "cuboulder_pages",
+        "DUPEFILTER_CLASS": "scrapy_redis.dupefilter.RFPDupeFilter",
+        "SCHEDULER": "scrapy_redis.scheduler.Scheduler",
+        "SCHEDULER_ORDER": "BFO",
+        "SCHEDULER_PERSIST": true,
+        "SCHEDULER_QUEUE_CLASS": "scrapy_redis.queue.SpiderPriorityQueue",
+        "REDIS_URL": "redis://localhost:6379/0",
+        "REDIS_HOST": "127.0.0.1",
+        "REDIS_PORT": 6379,
+        "CLOSESPIDER_ITEMCOUNT": 500,
+        "USE_BFS": true,
         "ITEM_PIPELINES": {
-            "src.pipeline.DataCleaningPipeline": 100,
-            "src.pipeline.EmbeddingPipeline": 200,
-            "src.pipeline.VectorDatabasePipeline": 300,
+            "scrapy_redis.pipelines.RedisPipeline": 50,
+            "crawler.pipelines.data_cleaning.DataCleaningPipeline": 100,
+            "crawler.pipelines.embedding.EmbeddingPipeline": 200,
+            "crawler.pipelines.vector_store.VectorStorePipeline": 300
         },
         "FEEDS": {
             "output/crawled_pages.jsonl": {
@@ -39,12 +41,9 @@
                 "dupefilter_file_path": "seen_urls.txt",
                 "dupefilter_redis_url": "redis://localhost:6379/0",
                 "dupefilter_key_prefix": "scrapy:dupefilter",
-                "dupefilter_collection": "cuboulder_pages",
-                "dupefilter_url": "http://localhost:6333",
-            },
-        },
-        "EXTENSIONS": {
-            "src.extensions.item_count_closer.ItemCountCloser": 500,
+                "dupefilter_collection": "university_pages",
+                "dupefilter_url": "http://localhost:6333"
+            }
         }
     }
 }

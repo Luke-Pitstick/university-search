@@ -1,0 +1,5 @@
+{
+    "pipeline.DataCleaningPipeline": 100,
+    "pipeline.EmbeddingPipeline": 200,
+    "pipeline.VectorDatabasePipeline": 300
+}

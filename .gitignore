@@ -20,6 +20,14 @@ wheels/
 .installed.cfg
 *.egg
 
+# Scrapy
+.scrapy/
+httpcache/
+*.log
+
+# Ruff
+.ruff_cache/
+
 # Virtual Environments
 .venv/
 venv/
