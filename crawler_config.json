@@ -1,0 +1,50 @@
+{
+    "settings": {
+    "USER_AGENT": "Mozilla/5.0 (compatible; CustomCrawler/1.0)",
+        'USER_AGENT', 
+        "ROBOTSTXT_OBEY": true,
+        "LOG_LEVEL": "ERROR",
+        "LOG_STDOUT": false,
+        "DOWNLOAD_DELAY": 1,
+        "CONCURRENT_REQUESTS": 16,
+        "CONCURRENT_REQUESTS_PER_DOMAIN": 8,
+        "DEPTH_LIMIT": 10,
+        "HTTPCACHE_ENABLED": false,
+        "HTTPCACHE_EXPIRATION_SECS": 86400,
+        "HTTPCACHE_DIR": "httpcache",
+        "BASE_URL": "https://www.colorado.edu",
+        "DEPTH_PRIORITY": 1,
+        "SCHEDULER_DISK_QUEUE": "scrapy.squeues.PickleFifoDiskQueue",
+        "SCHEDULER_MEMORY_QUEUE": "scrapy.squeues.FifoMemoryQueue",
+        "DUPEFILTER_CLASS": "src.filters.dupefilter.RedisBasedDupeFilter",
+        "DUPEFILTER_REDIS_URL": "redis://localhost:6379/0",
+        "DUPEFILTER_DB_PATH": "shared_urls.db",
+        "DUPEFILTER_FILE_PATH": "seen_urls.txt",
+        "DUPEFILTER_KEY_PREFIX": "scrapy:dupefilter",
+        "QDRANT_URL": "http://localhost:6333",
+        "QDRANT_COLLECTION": "cuboulder_pages",
+        "ITEM_PIPELINES": {
+            "src.pipeline.DataCleaningPipeline": 100,
+            "src.pipeline.EmbeddingPipeline": 200,
+            "src.pipeline.VectorDatabasePipeline": 300,
+        },
+        "FEEDS": {
+            "output/crawled_pages.jsonl": {
+                "format": "jsonlines",
+                "encoding": "utf8",
+                "overwrite": true,
+                "dupefilter": true,
+                "dupefilter_key": "scrapy:dupefilter",
+                "dupefilter_db_path": "shared_urls.db",
+                "dupefilter_file_path": "seen_urls.txt",
+                "dupefilter_redis_url": "redis://localhost:6379/0",
+                "dupefilter_key_prefix": "scrapy:dupefilter",
+                "dupefilter_collection": "cuboulder_pages",
+                "dupefilter_url": "http://localhost:6333",
+            },
+        },
+        "EXTENSIONS": {
+            "src.extensions.item_count_closer.ItemCountCloser": 500,
+        }
+    }
+}
