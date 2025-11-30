@@ -2,12 +2,12 @@
     "settings": {
         "USER_AGENT": "Mozilla/5.0 (compatible; CustomCrawler/1.0)",
         "ROBOTSTXT_OBEY": true,
-        "LOG_LEVEL": "INF",
+        "LOG_LEVEL": "INFO",
         "LOG_STDOUT": false,
         "DOWNLOAD_DELAY": 1,
         "CONCURRENT_REQUESTS": 16,
         "CONCURRENT_REQUESTS_PER_DOMAIN": 8,
-        "DEPTH_LIMIT": 10,
+        "DEPTH_LIMIT": 15,
         "HTTPCACHE_ENABLED": false,
         "HTTPCACHE_EXPIRATION_SECS": 86400,
         "HTTPCACHE_DIR": "httpcache",
@@ -19,16 +19,18 @@
         "SCHEDULER_ORDER": "BFO",
         "SCHEDULER_PERSIST": true,
         "SCHEDULER_QUEUE_CLASS": "scrapy_redis.queue.SpiderPriorityQueue",
+        "SCHEDULER_QUEUE_KEY": "university_spider:requests",
+        "SCHEDULER_DUPEFILTER_KEY": "university_spider:dupefilter",
         "REDIS_URL": "redis://localhost:6379/0",
         "REDIS_HOST": "127.0.0.1",
         "REDIS_PORT": 6379,
-        "CLOSESPIDER_ITEMCOUNT": 500,
+        "CLOSESPIDER_ITEMCOUNT": 100,
         "USE_BFS": true,
         "ITEM_PIPELINES": {
             "scrapy_redis.pipelines.RedisPipeline": 50,
-            "crawler.pipelines.data_cleaning.DataCleaningPipeline": 100,
-            "crawler.pipelines.embedding.EmbeddingPipeline": 200,
-            "crawler.pipelines.vector_store.VectorStorePipeline": 300
+            "pipelines.data_cleaning.DataCleaningPipeline": 100,
+            "pipelines.embedding.EmbeddingPipeline": 200,
+            "pipelines.vector_store.VectorStorePipeline": 300
         },
         "FEEDS": {
             "output/crawled_pages.jsonl": {

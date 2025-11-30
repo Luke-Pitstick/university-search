@@ -1,4 +1,3 @@
-import re
 from trafilatura import extract
 
 class DataCleaningPipeline:

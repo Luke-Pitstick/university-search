@@ -1,30 +1,14 @@
 import json
 import sys
 import redis
+from urllib.parse import urlparse
 from scrapy.crawler import CrawlerProcess
-from crawler.spiders.university_spider import UniversitySpider
+from spiders.university_spider import UniversitySpider
+from utils.redis_utiils import clear_redis, add_to_redis
+from utils.general_utils import add_university_name
 
 
-def add_university_name(config, base_url):
-    university_name = base_url.replace("https://", "")
-    university_name = university_name.replace("www.", "")
-    university_name = university_name.replace("/", "")
-    university_name = university_name.replace(".edu", "")
-    
-    config["settings"]["UNIVERSITY_NAME"] = university_name
         
-
-def clear_redis(redis_url, spider_name):
-    r = redis.from_url(redis_url)
-    r.delete(f"{spider_name}:start_urls")
-    r.delete(f"{spider_name}:dupefilter")
-    r.delete(f"{spider_name}:requests")
-    r.delete(f"{spider_name}:items")
-
-def add_to_redis(start_url, redis_url, spider_name):
-    r = redis.from_url(redis_url)
-    key = f"{spider_name}:start_urls"
-    r.lpush(key, start_url)
 
 def load_config(path):
     with open(path, "r") as f:
@@ -53,6 +37,11 @@ def main():
     # Load Scrapy settings
     settings = config["settings"]
 
+    # Extract domain for all crawlers to share
+    parsed = urlparse(start_url)
+    base_domain = parsed.netloc
+    if base_domain.startswith("www."):
+        base_domain = base_domain[4:]
 
     # Run N concurrent crawlers
     process = CrawlerProcess(settings=settings)
@@ -63,7 +52,7 @@ def main():
 
     for i in range(count):
         print(f"Launching crawler #{i+1}")
-        crawler = process.crawl(UniversitySpider)
+        crawler = process.crawl(UniversitySpider, crawler_id=i+1, allowed_domains=[base_domain])
         crawlers.append(crawler)
 
     process.start()

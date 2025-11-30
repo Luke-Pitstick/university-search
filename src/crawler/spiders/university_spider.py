@@ -1,6 +1,5 @@
 from urllib.parse import urlparse
 from scrapy_redis.spiders import RedisSpider  # pyright: ignore[reportMissingImports]
-from scrapy.exceptions import IgnoreRequest
 from scrapy.linkextractors import LinkExtractor
 import scrapy
 
@@ -28,7 +27,17 @@ class UniversitySpider(RedisSpider):
         allow_domains=allowed_domains,
         deny_extensions=BAD_EXTENSIONS
     )
-    count = 0
+
+    def __init__(self, *args, **kwargs):
+        crawler_id = kwargs.pop('crawler_id', None)
+        super(UniversitySpider, self).__init__(*args, **kwargs)
+        if crawler_id:
+            self.name = f"{self.name}_{crawler_id}"
+
+    def make_requests_from_url(self, url):
+        # Override to ensure start_urls are filtered by the dupefilter
+        # This prevents the start URL from being re-crawled if discovered as a link later
+        return scrapy.Request(url, dont_filter=False)
 
     # ---------- Core Parser ----------
     def parse(self, response):

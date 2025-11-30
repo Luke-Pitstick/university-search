@@ -85,3 +85,4 @@ dmypy.json
 chroma_db/
 *.chroma
 chroma_langchain_db/
+chromadb-admin/
