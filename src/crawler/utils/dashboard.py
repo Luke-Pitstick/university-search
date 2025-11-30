@@ -2,15 +2,9 @@ import streamlit as st
 import chromadb
 import pandas as pd
 import os
-import sys
-
-# Add project root to path to allow importing config if needed
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../.."))
-if project_root not in sys.path:
-    sys.path.append(project_root)
 
 # Configuration
-CHROMA_DB_PATH = os.path.join(project_root, "chroma_langchain_db/")
+CHROMA_DB_PATH = "/Users/lukepitstick/university-search/chroma_langchain_db/"
 COLLECTION_NAME = "university_pages"
 
 st.set_page_config(page_title="ChromaDB Inspector", layout="wide")

@@ -1,5 +1,8 @@
 import redis
+from utils.redis_utils import clear_redis
 
-r = redis.from_url("redis://localhost:6379/0")
+def test_redis():
+    clear_redis("redis://localhost:6379/0", 10)
 
-r = redis.from_url("redis://localhost:6379/0")
+if __name__ == "__main__":
+    test_redis()

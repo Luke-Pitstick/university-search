@@ -4,8 +4,8 @@ from scrapy.linkextractors import LinkExtractor
 import scrapy
 
 class UniversitySpider(RedisSpider):
-    name = "university_crawler"
-    redis_key = "university_crawler:start_urls"
+    name = "university_spider"
+    redis_key = "university_spider:start_urls"
 
     custom_settings = {
         # BFS
@@ -33,6 +33,7 @@ class UniversitySpider(RedisSpider):
         super(UniversitySpider, self).__init__(*args, **kwargs)
         if crawler_id:
             self.name = f"{self.name}_{crawler_id}"
+            self.redis_key = f"{self.name}:start_urls"
 
     def make_requests_from_url(self, url):
         # Override to ensure start_urls are filtered by the dupefilter

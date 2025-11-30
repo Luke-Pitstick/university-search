@@ -4,11 +4,10 @@ import redis
 from urllib.parse import urlparse
 from scrapy.crawler import CrawlerProcess
 from spiders.university_spider import UniversitySpider
-from utils.redis_utiils import clear_redis, add_to_redis
+from utils.redis_utils import clear_redis, add_to_redis
 from utils.general_utils import add_university_name
+from utils.chroma_utils import clear_chroma_db
 
-
-        
 
 def load_config(path):
     with open(path, "r") as f:
@@ -28,12 +27,11 @@ def main():
     add_university_name(config, start_url)
     
     if test_mode == "true":
-        clear_redis(config["settings"]["REDIS_URL"], UniversitySpider.name)
-        
-    add_to_redis(start_url, config["settings"]["REDIS_URL"], UniversitySpider.name)
-
-    print(redis.from_url(config["settings"]["REDIS_URL"]).lrange(f"{UniversitySpider.name}:start_urls", 0, -1))
+        clear_redis(config["settings"]["REDIS_URL"], count)
+        #clear_chroma_db("chroma_langchain_db/")
     
+    add_to_redis(start_url, config["settings"]["REDIS_URL"], count)
+
     # Load Scrapy settings
     settings = config["settings"]
 

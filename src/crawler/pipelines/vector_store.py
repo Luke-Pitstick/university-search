@@ -11,8 +11,7 @@ class VectorStorePipeline:
         self.db_location = "./chroma_langchain_db"
         self.university_name = settings.get('UNIVERSITY_NAME')
         print("Starting VectorStorePipeline")
-        self.embeddings = OllamaEmbeddings(model = 'mxbai-embed-large')
-        self.vector_store = Chroma(collection_name = self.university_name, persist_directory = self.db_location, embedding_function = self.embeddings)  
+        self.vector_store = Chroma(collection_name = self.university_name, persist_directory = self.db_location, embedding_function=None)  
         print("VectorStorePipeline initialized")
     @classmethod
     def from_crawler(cls, crawler: Crawler):
@@ -26,16 +25,17 @@ class VectorStorePipeline:
     
     def process_item(self, item, spider):
         spider.logger.info(f"VectorStorePipeline: Storing data for {item['url']}")
-        docs = [
-            Document(
-                page_content=chunk["text"],
-                metadata={"url": item["url"], 
-                          "title": item.get("title", ""), 
-                          "source": "university_scraper"}, 
-                id=str(uuid.uuid4())) 
-                for chunk in item["embeddings"]
-            ]
         
-        self.vector_store.add_documents(docs)
+        texts = [chunk["text"] for chunk in item["embeddings"]]
+        embeddings = [chunk["embedding"] for chunk in item["embeddings"]]
+        metadatas = [
+            {"url": item["url"], 
+             "title": item.get("title", ""), 
+             "source": "university_scraper"} 
+            for _ in item["embeddings"]
+        ]
+        ids = [str(uuid.uuid4()) for _ in item["embeddings"]]
+        
+        self.vector_store.add_texts(texts=texts, metadatas=metadatas, ids=ids, embeddings=embeddings)
         return item
     
