@@ -13,6 +13,7 @@ class EmbeddingPipeline:
         self.embeddings = OllamaEmbeddings(model = 'mxbai-embed-large')
         self.text_splitter = RecursiveCharacterTextSplitter(chunk_size = 256, chunk_overlap = 50)   
         print("EmbeddingPipeline initialized")
+        
     @classmethod
     def from_crawler(cls, crawler: Crawler):
         # Retrieve the settings object from the crawler

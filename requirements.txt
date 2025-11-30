@@ -10,9 +10,13 @@ beautifulsoup4>=4.12.0
 langchain-core>=0.3.0,<1.0.0
 langchain-chroma>=0.1.0,<1.0.0
 langchain-openai>=0.1.0
+langchain-community>=0.3.0
 
 # Vector database - using older version that doesn't require onnxruntime
 chromadb>=0.4.0,<1.0.0
+
+# Reranking
+sentence-transformers>=2.2.0
 
 # Additional dependencies that may be needed
 pydantic>=2.0.0,<3.0.0

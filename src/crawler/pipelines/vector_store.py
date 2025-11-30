@@ -37,5 +37,6 @@ class VectorStorePipeline:
         ids = [str(uuid.uuid4()) for _ in item["embeddings"]]
         
         self.vector_store.add_texts(texts=texts, metadatas=metadatas, ids=ids, embeddings=embeddings)
+        spider.logger.info(f"VectorStorePipeline: Added {len(item['embeddings'])} embeddings to {self.university_name}")
         return item
     
