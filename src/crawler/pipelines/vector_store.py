@@ -8,7 +8,7 @@ import uuid
 class VectorStorePipeline:
     def __init__(self, settings: Settings):
         self.settings = settings
-        self.db_location = "./chroma_langchain_db"
+        self.db_location = "../../chroma_langchain_db"
         self.university_name = settings.get('UNIVERSITY_NAME')
         print("Starting VectorStorePipeline")
         self.vector_store = Chroma(collection_name = self.university_name, persist_directory = self.db_location, embedding_function=None)  
@@ -36,7 +36,13 @@ class VectorStorePipeline:
         ]
         ids = [str(uuid.uuid4()) for _ in item["embeddings"]]
         
-        self.vector_store.add_texts(texts=texts, metadatas=metadatas, ids=ids, embeddings=embeddings)
+        # Use underlying collection directly to pass pre-computed embeddings
+        self.vector_store._collection.add(
+            documents=texts,
+            metadatas=metadatas,
+            ids=ids,
+            embeddings=embeddings
+        )
         spider.logger.info(f"VectorStorePipeline: Added {len(item['embeddings'])} embeddings to {self.university_name}")
         return item
     

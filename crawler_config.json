@@ -24,7 +24,7 @@
         "REDIS_URL": "redis://localhost:6379/0",
         "REDIS_HOST": "127.0.0.1",
         "REDIS_PORT": 6379,
-        "CLOSESPIDER_ITEMCOUNT": 100,
+        "CLOSESPIDER_ITEMCOUNT": 750,
         "USE_BFS": true,
         "ITEM_PIPELINES": {
             "scrapy_redis.pipelines.RedisPipeline": 50,

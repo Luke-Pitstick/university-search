@@ -9,7 +9,7 @@ from utils.chroma_utils import clear_chroma_db
 
 # Configuration
 LOG_FILE = "/Users/lukepitstick/university-search/crawler_output.log"
-CHROMA_DB_PATH = "/Users/lukepitstick/university-search/chroma_langchain_db/"
+CHROMA_DB_PATH = '../../chroma_langchain_db'
 
 st.set_page_config(page_title="University Crawler Dashboard", layout="wide")
 st.title("🎓 University Crawler Dashboard")

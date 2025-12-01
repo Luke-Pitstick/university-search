@@ -11,7 +11,7 @@ class EmbeddingPipeline:
     def __init__(self, settings: Settings):
         print("Starting EmbeddingPipeline")
         self.embeddings = OllamaEmbeddings(model = 'mxbai-embed-large')
-        self.text_splitter = RecursiveCharacterTextSplitter(chunk_size = 256, chunk_overlap = 50)   
+        self.text_splitter = RecursiveCharacterTextSplitter(chunk_size = 750, chunk_overlap = 150)   
         print("EmbeddingPipeline initialized")
         
     @classmethod
